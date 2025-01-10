@@ -3,11 +3,34 @@
 {%block contenitore%}
 <h1><strong>Register</strong></h1>
     <ul>
-        <li><a href="{{url_for('register')}}">Register</a></li>
         <li><a href="{{url_for('login')}}">Login</a></li>
     </ul>
 
     <form>
+        <fieldset> <!-- il fieldset raggruppa i campi del form in un rettangolo-->
+            <legend>Registrazione:</legend>
+            <div>
+                <label for="username">User:</label>
+                <input type="text" name="username" placeholder="Inserisci nome">
+            </div>
+           
+            <br>
 
+            <div>
+                <label for="password">Password:</label>
+                <input type="text" name="password" placeholder="Inserisci password">
+            </div>
+            
+            <br>
+
+            <div>
+                <label for="cpassword">Conferma password:</label>
+                <input type="text" name="cpassword" placeholder="Conferma password">
+            </div>
+            
+            <br>
+
+            <button class="button"><a href="{{url_for('home')}}" style="text-decoration: none;">Register</a></button>
+        </fieldset>
     </form>
 {%endblock%}

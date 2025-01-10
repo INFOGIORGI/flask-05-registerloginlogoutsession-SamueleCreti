@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from flask_mysqldb import MySQL
 
 app = Flask(__name__)
 
@@ -14,4 +15,9 @@ def register():
 def login():
     return render_template("login.html", titolo="Login")
 
-app.run()
+@app.route("/personale")
+def personale():
+    return render_template("personale.html", titolo="Personale")
+
+if __name__ == '__main__': 
+    app.run(debug=True)
