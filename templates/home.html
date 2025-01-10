@@ -1,0 +1,9 @@
+{%extends 'base.html'%}
+
+{%block contenitore%}
+    <h1><strong>Home</strong></h1>
+    <ul>
+        <li><a href="{{url_for('register')}}">Register</a></li>
+        <li><a href="{{url_for('login')}}">Login</a></li>
+    </ul>
+{%endblock%}
