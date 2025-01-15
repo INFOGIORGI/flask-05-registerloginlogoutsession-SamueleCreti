@@ -11,19 +11,21 @@
             <legend>Login:</legend>
             <div>
                 <label for="username">User:</label>
-                <input type="text" name="username" placeholder="Inserisci nome" />
+                <input type="text" name="username" placeholder="Inserisci nome">
             </div>
            
             <br>
 
             <div>
                 <label for="password">Password:</label>
-                <input type="text" name="password" placeholder="Inserisci password" />
+                <input type="text" name="password" placeholder="Inserisci password">
             </div>
 
             <br>
            
-            <button class="button"><a href="{{url_for('personale')}}" style="text-decoration: none;">Login</a></button>
+            <div>
+                <input type="submit" value="Login">
+            </div>
         </fieldset>
     </form>
 {%endblock%}

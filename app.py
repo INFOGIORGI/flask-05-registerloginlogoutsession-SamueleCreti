@@ -31,24 +31,26 @@ def register():
         else:
             if password != cpassword:
                 return render_template("register.html", errore="Campi password diversi") #i campi sono stati tutti inseriti ma le password non coincidono
-            else:
-                cursor = mysql.connection.cursor()
+            
+            cursor = mysql.connection.cursor()
+            
+            #Prima query: devo controllare lo username
+            select = "SELECT username FROM users WHERE username = %s"
+            cursor.execute(select, (username,))
+            dati = cursor.fetchall()
 
-                select = "SELECT * FROM users WHERE username=%s "
-                
-                #devo controllare lo username
-                if cursor.execute(select(username,)) 
+            if len(dati) != 0: #se la tupla di tuple non è vuota (lunghezza 0) vuol dire che lo username è già presente nel db
+                return render_template("register.html", errore="Username già esistente")
 
-                insert = "INSERT INTO users VALUES(%s, %s, %s, %s)"
+            #seconda query: eseguo la registrazione inserendo i campi del form nel db
+            insert = "INSERT INTO users VALUES(%s, %s, %s, %s)"
+            cursor.execute(insert, (username, password, nome, cognome)) #il cpassword serve solo per il controllo e non va inserito nel database
+            mysql.connection.commit() #per fare il commit
 
-                cursor.execute(insert, (nome, cognome, username, password)) #il cpassword serve solo per il controllo e non va inserito nel database
+            cursor.close()
 
-                mysql.connection.commit() #per fare il commit
-
-                cursor.close()
-
-                return redirect(url_for('home'))
-                #return redirect("/inserisci la route e non il nome della funzione")
+            return redirect(url_for('home'))
+            #return redirect("/inserisci la route e non il nome della funzione")
 
 @app.route("/login")
 def login():
@@ -57,8 +59,6 @@ def login():
 @app.route("/personale")
 def personale():
     return render_template("personale.html", titolo="Personale")
-
-
 
 if __name__ == '__main__': 
     app.run(debug=True)
