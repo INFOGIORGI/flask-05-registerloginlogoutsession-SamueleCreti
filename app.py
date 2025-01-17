@@ -3,7 +3,7 @@ from flask_mysqldb import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash #per gestire l'hash
 
 app = Flask(__name__)
-app.secret_key = 'una-chiave-segreta' #affinchè la flash funzioni bisogna avere una chiave segreta
+app.secret_key = 'una-chiave-segreta' #affinchè la flash funzioni bisogna avere una chiave segreta. I dati vengono passati nei cookie e cifrati
 
 app.config["MYSQL_HOST"] = "138.41.20.102"
 app.config["MYSQL_PORT"] = 53306
@@ -17,7 +17,7 @@ mysql = MySQL(app)
 def home():
     return render_template("home.html", titolo="Home")
 
-@app.route("/registrati", methods=["GET","POST"])
+@app.route("/registrati", methods = ["GET", "POST"])
 def register():
     if request.method == "GET":
         return render_template("register.html", titolo="Register")
@@ -58,9 +58,29 @@ def register():
         return redirect(url_for('home'))
         #return redirect("/inserisci la route e non il nome della funzione")
 
-@app.route("/login")
+@app.route("/login", methods = ["GET", "POST"])
 def login():
-    return render_template("login.html", titolo="Login")
+    if request.method == "GET":
+        return render_template("login.html", titolo="Login")
+    
+    username = request.form.get("username")
+    password = request.form.get("password")
+
+    cursor = mysql.connection.cursor()
+
+    query = "SELECT * FROM users WHERE username = %s AND password = %s"
+    cursor.execute(query, (username, password))
+    dati = cursor.fetchall()
+
+    if len(dati) == 0:
+        flash("Dati errati")
+        return redirect(url_for('login'))
+    
+    cursor.close()
+
+    return redirect(url_for('personale'))
+
+    
 
 @app.route("/personale")
 def personale():

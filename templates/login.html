@@ -6,7 +6,7 @@
         <li><a href="{{url_for('register')}}">Register</a></li>
     </ul>
 
-    <form>
+    <form action="/login" method="post">
         <fieldset>
             <legend>Login:</legend>
             <div>
@@ -18,7 +18,7 @@
 
             <div>
                 <label for="password">Password:</label>
-                <input type="text" name="password" placeholder="Inserisci password">
+                <input type="password" name="password" placeholder="Inserisci password">
             </div>
 
             <br>
