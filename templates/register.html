@@ -6,7 +6,14 @@
         <li><a href="{{url_for('login')}}">Login</a></li>
     </ul>
 
-    <h1 style="color: red;">{{errore}}</h1>
+    <!-- Visualizzazione dei messaggi flash -->
+    {% with messages = get_flashed_messages() %} 
+        {% if messages %}
+            {% for message in messages %}
+                <h1 style="color: red;">{{ message }}</h1>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
     <form action="/registrati" method="post">
         <fieldset> <!-- il fieldset raggruppa i campi del form in un rettangolo-->

@@ -29,10 +29,12 @@ def register():
     cpassword = request.form.get("cpassword", "")
 
     if nome == "" or cognome == "" or username == "" or password == "" or cpassword == "":  #se almeno uno dei campi è vuoto non metti nel database e ritorni errore
-        return render_template("register.html", errore="Campo non valido")
+        flash("Campo non valorizzato")
+        return redirect(url_for('register'))
     else:
         if password != cpassword:
-            return render_template("register.html", errore="Campi password diversi") #i campi sono stati tutti inseriti ma le password non coincidono
+            flash("Campi password diversi")
+            return redirect(url_for('register')) #i campi sono stati tutti inseriti ma le password non coincidono
         
         cursor = mysql.connection.cursor()
         
@@ -42,7 +44,8 @@ def register():
         dati = cursor.fetchall()
 
         if len(dati) != 0: #se la tupla di tuple non è vuota (lunghezza 0) vuol dire che lo username è già presente nel db
-            return render_template("register.html", errore="Username già esistente")
+            flash("Username già esistente")
+            return redirect(url_for('register'))
 
         #seconda query: eseguo la registrazione inserendo i campi del form nel db
         insert = "INSERT INTO users VALUES(%s, %s, %s, %s)"
