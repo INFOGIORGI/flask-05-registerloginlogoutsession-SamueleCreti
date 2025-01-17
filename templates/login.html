@@ -6,6 +6,16 @@
         <li><a href="{{url_for('register')}}">Register</a></li>
     </ul>
 
+    
+    {% with messages = get_flashed_messages() %} 
+        {% if messages %}
+            {% for message in messages %}
+                <h1 style="color: red;">{{ message }}</h1>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+
     <form action="/login" method="post">
         <fieldset>
             <legend>Login:</legend>

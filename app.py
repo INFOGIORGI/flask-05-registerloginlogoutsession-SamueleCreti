@@ -68,11 +68,18 @@ def login():
 
     cursor = mysql.connection.cursor()
 
-    query = "SELECT * FROM users WHERE username = %s AND password = %s"
-    cursor.execute(query, (username, password))
+    query = "SELECT password FROM users WHERE username = %s"
+    cursor.execute(query, (username,))
     dati = cursor.fetchall()
 
     if len(dati) == 0:
+        flash("Dati errati")
+        return redirect(url_for('login'))
+    
+    hashPassword = dati[0][0]
+    
+    check = check_password_hash(hashPassword, password)
+    if check == False:
         flash("Dati errati")
         return redirect(url_for('login'))
     
@@ -80,7 +87,6 @@ def login():
 
     return redirect(url_for('personale'))
 
-    
 
 @app.route("/personale")
 def personale():
